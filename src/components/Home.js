@@ -1,14 +1,45 @@
-import React from 'react';
-import Rainbow from "../hoc/Rainbow"
-function Home(){
-    return(
-        <div className="container">
-            <h4 className="center">Home</h4>
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eum vero sit, consectetur repudiandae libero quod aperiam quaerat quos praesentium nam! Fugit reprehenderit quod libero minima delectus impedit necessitatibus aspernatur blanditiis!</p>
-            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Velit veritatis fugit nesciunt cupiditate deleniti iure reprehenderit sapiente ipsum inventore, non quas alias dolore tempora voluptates, assumenda accusamus at quos nostrum?</p>
-        </div>
-    )
+import React, { Component } from 'react';
+import axios from "axios";
+
+
+class Home extends Component {
+    state = {
+        posts: []
+    }
+    componentDidMount(){
+        axios.get("https://jsonplaceholder.typicode.com/posts")
+        .then(response=>{
+            this.setState({
+                posts:  response.data.slice(0,5) 
+            })
+        })
+    }
+    render() {
+        const posts = this.state.posts;
+        const postList = posts.length ? (
+            posts.map(post=>{
+                return(
+                    <div className="post card" key={post.id}>
+                        <div className="card-content">
+                            <span className="card-title">{post.title}</span>
+                            <p>{post.body}</p>
+                        </div>
+                    </div>
+                )
+            })
+        ) : (
+            <div className="center">
+                No posts 
+            </div>
+        );
+        return (
+            <div className="container">
+                <h4 className="center">Home</h4>
+                {postList}
+            </div>
+        )
+    }
 }
 
 
-export default Rainbow(Home);
+export default Home;
