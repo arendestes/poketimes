@@ -16,4 +16,3 @@ function Contact(props){
 
 export default Rainbow(Contact);
 
-
